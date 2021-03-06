@@ -1,8 +1,16 @@
 # actions-set-env-vars
 
-Action to dynamically set the `.env` file and output common env vars
+Dynamically sets the `.env` file based on the branch name (or target branch if a pull request),
+then sets each env var as a github "output" on the action.
+
+Also sets `NODE_VERSION` from a `.nvmrc`, if found
 
 ## Ouputs
+
+```
+.env file
+# Set from the branch name (or target branch if a pull request)
+```
 
 ```
 APP_ENV
