@@ -17,8 +17,9 @@ try {
     core.info('No .nvmrc file found, skipping setting NODE_VERSION output.');
   }
 
-  const eventName = github.context.eventName;
-  const ref = (github.context.payload.base_ref || github.context.ref).replace('refs/heads/', '');
+  const context = github.context;
+  const eventName = context.eventName;
+  const ref = (context.payload.pull_request?.base.ref || context.ref).replace('refs/heads/', '');
   const refToEnv: Record<string, Env> = {
     master: 'prod',
     main: 'prod',
