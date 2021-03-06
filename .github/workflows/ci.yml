@@ -1,0 +1,55 @@
+on: push
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: v12.21.0
+
+      - name: Install, build, package
+        run: |
+          npm install
+          npm run build
+          npm run package
+          rm -rf node_modules index.js
+
+      - name: Test action runs
+        id: test
+        uses: ./
+
+      - name: Test action outputs NODE_VERSION
+        run: |
+          if [ ${{ steps.test.outputs.NODE_VERSION }} != 'v12.21.0' ]; then
+            echo 'Error! NODE_VERSION not properly set'
+            echo 'Found: ${{ steps.test.outputs.NODE_VERSION }}'
+            echo 'Expected: v12.21.0'
+            exit 1
+          else
+            echo 'NODE_VERSION set successfully'
+          fi
+
+      - name: Test action outputs APP_ENV
+        run: |
+          if [ ${{ steps.test.outputs.APP_ENV }} != 'prod' ]; then
+            echo 'Error! APP_ENV not properly set'
+            echo 'Found: ${{ steps.test.outputs.APP_ENV }}'
+            echo 'Expected: prod'
+            exit 1
+          else
+            echo 'APP_ENV set successfully'
+          fi
+
+      - name: Commit newly built/packaged action
+        uses: EndBug/add-and-commit@v5
+        with:
+          author_name: github-actions
+          message: 'ci: automated build'
+          add: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
