@@ -57,12 +57,6 @@ try {
         develop: 'dev',
     };
     const env = eventName === 'release' ? 'prod' : refToEnv[ref];
-    core.info(`github context: ${JSON.stringify(github.context)}`);
-    core.info(`github.eventName: ${eventName}`);
-    core.info(`github.base_ref: ${github.context.payload.base_ref}`);
-    core.info(`github.ref: ${github.context.ref}`);
-    core.info(`Using ref: ${ref}`);
-    core.info(`Using env: ${env}`);
     const envExists = env && fs.existsSync(`.env.${env}`);
     if (envExists) {
         core.info(`Copying .env.${env} --> .env`);
