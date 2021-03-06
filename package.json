@@ -1,0 +1,32 @@
+{
+  "name": "actions-set-env-vars",
+  "version": "1.0.0",
+  "description": "Action to dynamically set the `.env` file and output common env vars",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "package": "ncc build --source-map --license licenses.txt",
+    "format:fix": "prettier --write '**/*.{js,jsx,ts,tsx,json,htm,html,yml,yaml}'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarink-software/actions-set-env-vars.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sarink-software/actions-set-env-vars/issues"
+  },
+  "homepage": "https://github.com/sarink-software/actions-set-env-vars#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node12": "^1.0.7",
+    "@vercel/ncc": "^0.25.1",
+    "prettier": "^2.2.0",
+    "typescript": "^4.1.3"
+  }
+}
