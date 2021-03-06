@@ -31,7 +31,7 @@ jobs:
 
       - name: Set env vars
         id: set-env-vars
-        uses: aplaceformom/actions-set-env-vars@latest
+        uses: aplaceformom/actions-set-env-vars@main
 
       - name: Setup node
         uses: actions/setup-node@v1
