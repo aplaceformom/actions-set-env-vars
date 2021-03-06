@@ -26,6 +26,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 // Import modules with "* as" https://github.com/vercel/ncc/issues/621
 const core = __importStar(__webpack_require__(186));
@@ -43,8 +44,9 @@ try {
     else {
         core.info('No .nvmrc file found, skipping setting NODE_VERSION output.');
     }
-    const eventName = github.context.eventName;
-    const ref = (github.context.payload.base_ref || github.context.ref).replace('refs/heads/', '');
+    const context = github.context;
+    const eventName = context.eventName;
+    const ref = (((_a = context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.base.ref) || context.ref).replace('refs/heads/', '');
     const refToEnv = {
         master: 'prod',
         main: 'prod',
