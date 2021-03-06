@@ -58,24 +58,18 @@ try {
     };
     const env = eventName === 'release' ? 'prod' : refToEnv[ref];
     const envExists = env && fs.existsSync(`.env.${env}`);
-    if (envExists) {
-        core.info(`Copying .env.${env} --> .env`);
-        fs.copyFileSync(`.env.${env}`, '.env');
-        const dotEnvConfig = dotenv.config();
-        const parsedEnvFile = dotEnvConfig.parsed;
-        if (dotEnvConfig.error || !parsedEnvFile)
-            throw dotEnvConfig.error;
-        Object.entries(parsedEnvFile).forEach(([key, val]) => {
-            core.info(`Setting output var: ${key}=******`);
-            core.setOutput(key, val);
-        });
-    }
-    else {
-        core.info(`Could not find a .env file for env: ${env}`);
-    }
-    if (!envExists && !nvmrcExists) {
-        throw new Error('No .nvmrc or .env file found');
-    }
+    if (!envExists)
+        throw new Error('No .env file found');
+    core.info(`Copying .env.${env} --> .env`);
+    fs.copyFileSync(`.env.${env}`, '.env');
+    const dotEnvConfig = dotenv.config();
+    const parsedEnvFile = dotEnvConfig.parsed;
+    if (dotEnvConfig.error || !parsedEnvFile)
+        throw dotEnvConfig.error;
+    Object.entries(parsedEnvFile).forEach(([key, val]) => {
+        core.info(`Setting output var: ${key}=******`);
+        core.setOutput(key, val);
+    });
 }
 catch (error) {
     core.setFailed(error.message);
