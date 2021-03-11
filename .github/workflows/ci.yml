@@ -36,10 +36,10 @@ jobs:
 
       - name: Test action outputs APP_ENV
         run: |
-          if [ ${{ steps.test.outputs.APP_ENV }} != 'prod' ]; then
+          if [ ${{ steps.test.outputs.APP_ENV }} != 'stage' ]; then
             echo 'Error! APP_ENV not properly set'
             echo 'Found: ${{ steps.test.outputs.APP_ENV }}'
-            echo 'Expected: prod'
+            echo 'Expected: stage'
             exit 1
           else
             echo 'APP_ENV set successfully'
