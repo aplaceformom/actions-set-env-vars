@@ -21,13 +21,13 @@ try {
   const eventName = context.eventName;
   const ref = (context.payload.pull_request?.base.ref || context.ref).replace('refs/heads/', '');
   const refToEnv: Record<string, Env> = {
-    master: 'prod',
-    main: 'prod',
+    dev: 'dev',
+    develop: 'dev',
     qa: 'qa',
     stage: 'stage',
     staging: 'stage',
-    dev: 'dev',
-    develop: 'dev',
+    master: 'stage',
+    main: 'stage',
   };
   const env = eventName === 'release' ? 'prod' : refToEnv[ref];
   const envExists = env && fs.existsSync(`.env.${env}`);
