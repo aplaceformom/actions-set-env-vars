@@ -48,13 +48,13 @@ try {
     const eventName = context.eventName;
     const ref = (((_a = context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.base.ref) || context.ref).replace('refs/heads/', '');
     const refToEnv = {
-        master: 'prod',
-        main: 'prod',
+        dev: 'dev',
+        develop: 'dev',
         qa: 'qa',
         stage: 'stage',
         staging: 'stage',
-        dev: 'dev',
-        develop: 'dev',
+        master: 'stage',
+        main: 'stage',
     };
     const env = eventName === 'release' ? 'prod' : refToEnv[ref];
     const envExists = env && fs.existsSync(`.env.${env}`);
