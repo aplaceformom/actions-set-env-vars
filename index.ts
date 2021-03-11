@@ -41,7 +41,7 @@ try {
   const parsedEnvFile = dotEnvConfig.parsed;
   if (dotEnvConfig.error || !parsedEnvFile) throw dotEnvConfig.error;
   Object.entries(parsedEnvFile).forEach(([key, val]) => {
-    core.info(`Setting output var: ${key}=******`);
+    core.info(`Setting output var: ${key}=${val}`);
     core.setOutput(key, val);
   });
 } catch (error) {
