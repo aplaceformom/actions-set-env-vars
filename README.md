@@ -1,31 +1,11 @@
 # actions-set-env-vars
 
-Dynamically sets the `.env` file based on the branch name (or target branch if a pull request),
-then sets each env var as a github "output" on the action.
+Dynamically sets the `.env` file based on the `env` input (if supplied), or
+auto-detects based on branch name (target branch if a pull request).
+
+Then sets each env var as a github "output" on the action.
 
 Also sets `NODE_VERSION` from a `.nvmrc`, if found
-
-## Ouputs
-
-```
-.env file
-# Set from the branch name (or target branch if a pull request)
-```
-
-```
-APP_ENV
-# Set to dev, qa, stage, or prod (based on branch name)
-```
-
-```
-NODE_VERSION
-# Set to the value found in the `.nvmrc` file
-```
-
-```
-All values inside .env file
-# Set as key value pairs on the "outputs" of this action
-```
 
 ## Usage
 
@@ -40,6 +20,9 @@ jobs:
       - name: Set env vars
         id: set-env-vars
         uses: aplaceformom/actions-set-env-vars@main
+        # OPTIONAL
+        # with:
+        #  env: dev
 
       - name: Setup node
         uses: actions/setup-node@v1

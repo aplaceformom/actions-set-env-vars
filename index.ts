@@ -1,24 +1,14 @@
 // Import modules with "* as" https://github.com/vercel/ncc/issues/621
 import * as core from '@actions/core';
 import * as github from '@actions/github';
+import { Context } from '@actions/github/lib/context';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 
-try {
-  type Env = 'prod' | 'qa' | 'stage' | 'dev';
+type Env = 'prod' | 'qa' | 'stage' | 'dev';
 
-  const nvmrcExists = fs.existsSync('.nvmrc');
-  if (nvmrcExists) {
-    const nvmrc = fs.readFileSync('.nvmrc', 'utf-8');
-    core.info('Found .nvmrc file');
-    core.info(`Setting output var: NODE_VERSION=${nvmrc}`);
-    core.setOutput('NODE_VERSION', nvmrc);
-  } else {
-    core.info('No .nvmrc file found, skipping setting NODE_VERSION output.');
-  }
-
-  const context = github.context;
-  const eventName = context.eventName;
+const getEnv = (context: Context): Env => {
+  if (context.eventName === 'release') return 'prod';
   const ref = (context.payload.pull_request?.base.ref || context.ref).replace('refs/heads/', '');
   const refToEnv: Record<string, Env> = {
     dev: 'dev',
@@ -29,9 +19,22 @@ try {
     master: 'stage',
     main: 'stage',
   };
-  const env = eventName === 'release' ? 'prod' : refToEnv[ref];
-  const envExists = env && fs.existsSync(`.env.${env}`);
+  return refToEnv[ref];
+};
 
+try {
+  const nvmrcExists = fs.existsSync('.nvmrc');
+  if (nvmrcExists) {
+    const nvmrc = fs.readFileSync('.nvmrc', 'utf-8');
+    core.info('Found .nvmrc file');
+    core.info(`Setting output var: NODE_VERSION=${nvmrc}`);
+    core.setOutput('NODE_VERSION', nvmrc);
+  } else {
+    core.info('No .nvmrc file found, skipping setting NODE_VERSION output.');
+  }
+
+  const env = core.getInput('env') || getEnv(github.context);
+  const envExists = env && fs.existsSync(`.env.${env}`);
   if (!envExists) throw new Error('No .env file found');
 
   core.info(`Copying .env.${env} --> .env`);

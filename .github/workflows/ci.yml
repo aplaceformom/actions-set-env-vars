@@ -19,30 +19,48 @@ jobs:
           npm run package
           rm -rf node_modules index.js
 
-      - name: Test action runs
-        id: test
+      - name: Test node version
+        id: test-node-version
         uses: ./
-
-      - name: Test action outputs NODE_VERSION
+      - name: Test node version outputs correct NODE_VERSION
         run: |
-          if [ ${{ steps.test.outputs.NODE_VERSION }} != 'v12.21.0' ]; then
+          if [ ${{ steps.test-node-version.outputs.NODE_VERSION }} != 'v12.21.0' ]; then
             echo 'Error! NODE_VERSION not properly set'
-            echo 'Found: ${{ steps.test.outputs.NODE_VERSION }}'
+            echo 'Found: ${{ steps.test-node-version.outputs.NODE_VERSION }}'
             echo 'Expected: v12.21.0'
             exit 1
           else
             echo 'NODE_VERSION set successfully'
           fi
 
-      - name: Test action outputs APP_ENV
+      - name: Test default
+        id: test-default
+        uses: ./
+      - name: Test default outputs correct APP_ENV
         run: |
-          if [ ${{ steps.test.outputs.APP_ENV }} != 'stage' ]; then
+          if [ ${{ steps.test-default.outputs.APP_ENV }} != 'stage' ]; then
             echo 'Error! APP_ENV not properly set'
-            echo 'Found: ${{ steps.test.outputs.APP_ENV }}'
+            echo 'Found: ${{ steps.test-default.outputs.APP_ENV }}'
             echo 'Expected: stage'
             exit 1
           else
-            echo 'APP_ENV set successfully'
+            echo 'APP_ENV set successfully (without env input)'
+          fi
+
+      - name: Test env input
+        id: test-env-input
+        uses: ./
+        with:
+          env: dev
+      - name: Test env input action outputs correct APP_ENV
+        run: |
+          if [ ${{ steps.test-env-input.outputs.APP_ENV }} != 'dev' ]; then
+            echo 'Error! APP_ENV not properly set'
+            echo 'Found: ${{ steps.test-env-input.outputs.APP_ENV }}'
+            echo 'Expected: dev'
+            exit 1
+          else
+            echo 'APP_ENV set successfully (with env input)'
           fi
 
       - name: Commit newly built/packaged action
