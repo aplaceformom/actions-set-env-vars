@@ -26,13 +26,28 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 // Import modules with "* as" https://github.com/vercel/ncc/issues/621
 const core = __importStar(__webpack_require__(186));
 const github = __importStar(__webpack_require__(438));
 const dotenv = __importStar(__webpack_require__(437));
 const fs = __importStar(__webpack_require__(747));
+const getEnv = (context) => {
+    var _a;
+    if (context.eventName === 'release')
+        return 'prod';
+    const ref = (((_a = context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.base.ref) || context.ref).replace('refs/heads/', '');
+    const refToEnv = {
+        dev: 'dev',
+        develop: 'dev',
+        qa: 'qa',
+        stage: 'stage',
+        staging: 'stage',
+        master: 'stage',
+        main: 'stage',
+    };
+    return refToEnv[ref];
+};
 try {
     const nvmrcExists = fs.existsSync('.nvmrc');
     if (nvmrcExists) {
@@ -44,19 +59,7 @@ try {
     else {
         core.info('No .nvmrc file found, skipping setting NODE_VERSION output.');
     }
-    const context = github.context;
-    const eventName = context.eventName;
-    const ref = (((_a = context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.base.ref) || context.ref).replace('refs/heads/', '');
-    const refToEnv = {
-        dev: 'dev',
-        develop: 'dev',
-        qa: 'qa',
-        stage: 'stage',
-        staging: 'stage',
-        master: 'stage',
-        main: 'stage',
-    };
-    const env = eventName === 'release' ? 'prod' : refToEnv[ref];
+    const env = core.getInput('env') || getEnv(github.context);
     const envExists = env && fs.existsSync(`.env.${env}`);
     if (!envExists)
         throw new Error('No .env file found');
