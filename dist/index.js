@@ -46,7 +46,12 @@ const getEnv = (context) => {
         master: 'stage',
         main: 'stage',
     };
-    return refToEnv[ref];
+    const env = refToEnv[ref];
+    core.debug(`gh context: ${JSON.stringify(context, null, 2)}`);
+    core.debug(`refToEnv: ${JSON.stringify(refToEnv, null, 2)}`);
+    core.debug(`ref: ${ref}`);
+    core.debug(`env: ${env}`);
+    return env;
 };
 try {
     const nvmrcExists = fs.existsSync('.nvmrc');
