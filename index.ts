@@ -19,7 +19,12 @@ const getEnv = (context: Context): Env => {
     master: 'stage',
     main: 'stage',
   };
-  return refToEnv[ref];
+  const env = refToEnv[ref];
+  core.debug(`gh context: ${JSON.stringify(context, null, 2)}`);
+  core.debug(`ref: ${ref}`);
+  core.debug(`refToEnv: ${JSON.stringify(refToEnv, null, 2)}`);
+  core.debug(`env: ${env}`);
+  return env;
 };
 
 try {
