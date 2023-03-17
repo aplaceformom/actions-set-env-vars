@@ -53,5 +53,9 @@ try {
     core.setOutput(key, val);
   });
 } catch (error) {
-  core.setFailed(error.message);
+  let errorMessage = 'Failed to do something exceptional';
+  if (error instanceof Error) {
+    errorMessage = error.message;
+  }
+  core.setFailed(errorMessage);
 }
