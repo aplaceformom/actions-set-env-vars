@@ -24,7 +24,7 @@
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
-    "@tsconfig/node12": "^1.0.11",
+    "@tsconfig/node14": "^1.0.3",
     "@types/node": "^18.15.3",
     "@vercel/ncc": "^0.36.1",
     "prettier": "^2.8.4",
