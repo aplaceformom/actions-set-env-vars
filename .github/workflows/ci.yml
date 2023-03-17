@@ -69,7 +69,7 @@ jobs:
           fi
 
       - name: Commit newly built/packaged action
-        uses: EndBug/add-and-commit@v5
+        uses: EndBug/add-and-commit@v9
         with:
           author_name: github-actions
           message: 'ci: automated build'
