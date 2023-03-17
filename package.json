@@ -19,14 +19,14 @@
   },
   "homepage": "https://github.com/sarink-software/actions-set-env-vars#readme",
   "dependencies": {
-    "@actions/core": "^1.2.6",
-    "@actions/github": "^4.0.0",
-    "dotenv": "^8.2.0"
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1",
+    "dotenv": "^16.0.3"
   },
   "devDependencies": {
-    "@tsconfig/node12": "^1.0.7",
-    "@vercel/ncc": "^0.25.1",
-    "prettier": "^2.2.0",
-    "typescript": "^4.1.3"
+    "@tsconfig/node12": "^1.0.11",
+    "@vercel/ncc": "^0.36.1",
+    "prettier": "^2.8.4",
+    "typescript": "^5.0.2"
   }
 }
