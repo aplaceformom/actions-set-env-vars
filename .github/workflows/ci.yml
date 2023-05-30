@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: v12.21.0
+          node-version: v16.19.1
 
       - name: Install, build, package
         run: |
@@ -29,10 +29,10 @@ jobs:
         uses: ./
       - name: Test node version outputs correct NODE_VERSION
         run: |
-          if [ ${{ steps.test-node-version.outputs.NODE_VERSION }} != 'v12.21.0' ]; then
+          if [ ${{ steps.test-node-version.outputs.NODE_VERSION }} != 'v16.19.1' ]; then
             echo 'Error! NODE_VERSION not properly set'
             echo 'Found: ${{ steps.test-node-version.outputs.NODE_VERSION }}'
-            echo 'Expected: v12.21.0'
+            echo 'Expected: v16.19.1'
             exit 1
           else
             echo 'NODE_VERSION set successfully'
@@ -69,7 +69,7 @@ jobs:
           fi
 
       - name: Commit newly built/packaged action
-        uses: EndBug/add-and-commit@v5
+        uses: EndBug/add-and-commit@v9
         with:
           author_name: github-actions
           message: 'ci: automated build'
